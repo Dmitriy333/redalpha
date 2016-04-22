@@ -41,7 +41,7 @@ public class CallController {
     public ResponseEntity<Call> addCall(@RequestBody Call call) {
         try {
             HttpHeaders responseHeaders = new HttpHeaders();
-            return new ResponseEntity<Call>(callService.createCall(call), responseHeaders, HttpStatus.CREATED);
+            return new ResponseEntity<Call>(callService.addCall(call), responseHeaders, HttpStatus.CREATED);
         } catch (EntityValidationException e) {
             HttpHeaders responseHeaders = new HttpHeaders();
             responseHeaders.set("message", e.getMessage());

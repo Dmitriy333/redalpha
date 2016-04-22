@@ -35,10 +35,9 @@ public class CallServiceTest {
     @InjectMocks
     private CallService callService = new CallServiceImpl();
 
-    private static Call call;
-    @SuppressWarnings("unused")
-    private static List<Call> callList;
     private static final String FORMATED_PHONE = "00420 123 456 780";
+    private Call call;
+    private List<Call> callList;
 
     @Before
     public void init() {
@@ -52,49 +51,44 @@ public class CallServiceTest {
         };
     }
 
-    private static final List<Call> CALL_LIST = new ArrayList<Call>() {
-        private static final long serialVersionUID = 1L;
-
-    };
-
     @Test
-    public void createCallTest() throws CallRepositoryException, ServiceException, EntityValidationException {
+    public void addCallTest() throws CallRepositoryException, ServiceException, EntityValidationException {
         when(phoneParser.parsePhone(call.getPhone())).thenReturn(FORMATED_PHONE);
-        when(callRepository.writeCall(call)).thenReturn(call);
+        when(callRepository.saveCall(call)).thenReturn(call);
 
         String initialPhone = call.getPhone();
-        callService.createCall(call);
+        callService.addCall(call);
 
         verify(phoneParser, times(1)).parsePhone(initialPhone);
         assertEquals(call.getPhone(), FORMATED_PHONE);
-        verify(callRepository, times(1)).writeCall(call);
+        verify(callRepository, times(1)).saveCall(call);
     }
 
     @Test(expected = ServiceException.class)
-    public void createCallThrowsServiceExceptionTest() throws ServiceException, EntityValidationException,
-            CallRepositoryException {
-        when(callRepository.writeCall(call)).thenThrow(new CallRepositoryException());
-        callService.createCall(call);
-        verify(callRepository, times(1)).writeCall(call);
+    public void addCallThrowsServiceExceptionTest()
+            throws ServiceException, EntityValidationException, CallRepositoryException {
+        when(callRepository.saveCall(call)).thenThrow(new CallRepositoryException());
+        callService.addCall(call);
+        verify(callRepository, times(1)).saveCall(call);
     }
 
     @Test
     public void getAllCallsTest() throws CallRepositoryException, ServiceException, EntityValidationException {
-        when(callRepository.readCalls()).thenReturn(CALL_LIST);
+        when(callRepository.loadCalls()).thenReturn(callList);
 
         List<Call> actualCalls = callService.getAllCalls();
 
-        verify(callRepository, times(1)).readCalls();
-        assertEquals(actualCalls.size(), CALL_LIST.size());
+        verify(callRepository, times(1)).loadCalls();
+        assertEquals(actualCalls.size(), callList.size());
     }
 
     @Test(expected = ServiceException.class)
-    public void getAllCallsTestThrowsServiceException() throws CallRepositoryException, ServiceException,
-            EntityValidationException {
-        when(callRepository.readCalls()).thenThrow(new CallRepositoryException());
+    public void getAllCallsTestThrowsServiceException()
+            throws CallRepositoryException, ServiceException, EntityValidationException {
+        when(callRepository.loadCalls()).thenThrow(new CallRepositoryException());
 
         callService.getAllCalls();
 
-        verify(callRepository, times(1)).readCalls();
+        verify(callRepository, times(1)).loadCalls();
     }
 }

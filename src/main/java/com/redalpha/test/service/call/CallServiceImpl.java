@@ -23,11 +23,11 @@ public class CallServiceImpl implements CallService {
     private PhoneParser phoneParser;
 
     @Override
-    public Call createCall(Call call) throws ServiceException, EntityValidationException {
+    public Call addCall(Call call) throws ServiceException, EntityValidationException {
         try {
             callValidationService.validateCall(call);
             call.setPhone(phoneParser.parsePhone(call.getPhone()));
-            return callWriterRepository.writeCall(call);
+            return callWriterRepository.saveCall(call);
         } catch (CallRepositoryException e) {
             throw new ServiceException("Can not write call.", e);
         }
@@ -36,7 +36,7 @@ public class CallServiceImpl implements CallService {
     @Override
     public List<Call> getAllCalls() throws ServiceException {
         try {
-            return callWriterRepository.readCalls();
+            return callWriterRepository.loadCalls();
         } catch (CallRepositoryException e) {
             throw new ServiceException("Can not get calls.", e);
         }

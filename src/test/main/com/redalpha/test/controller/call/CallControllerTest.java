@@ -67,33 +67,33 @@ public class CallControllerTest {
 
     @Test
     public void addCallTest() throws ServiceException, EntityValidationException {
-        when(callService.createCall(CREATE_CALL)).thenReturn(CREATE_CALL);
+        when(callService.addCall(CREATE_CALL)).thenReturn(CREATE_CALL);
 
         final ResponseEntity<Call> call = callController.addCall(CREATE_CALL);
 
-        verify(callService, times(1)).createCall(CREATE_CALL);
+        verify(callService, times(1)).addCall(CREATE_CALL);
         assertEquals(HttpStatus.CREATED, call.getStatusCode());
         assertEquals(call.getBody(), CREATE_CALL);
     }
 
     @Test
     public void addNonValidCallTest() throws ServiceException, EntityValidationException {
-        when(callService.createCall(CREATE_CALL)).thenThrow(new EntityValidationException("Not valid."));
+        when(callService.addCall(CREATE_CALL)).thenThrow(new EntityValidationException("Not valid."));
 
         final ResponseEntity<Call> call = callController.addCall(CREATE_CALL);
 
-        verify(callService, times(1)).createCall(CREATE_CALL);
+        verify(callService, times(1)).addCall(CREATE_CALL);
         assertEquals(HttpStatus.BAD_REQUEST, call.getStatusCode());
         assertEquals(call.getBody(), null);
     }
 
     @Test
     public void addCallThrowServiceExceptionTest() throws ServiceException, EntityValidationException {
-        when(callService.createCall(CREATE_CALL)).thenThrow(new ServiceException("Not valid."));
+        when(callService.addCall(CREATE_CALL)).thenThrow(new ServiceException("Not valid."));
 
         final ResponseEntity<Call> call = callController.addCall(CREATE_CALL);
 
-        verify(callService, times(1)).createCall(CREATE_CALL);
+        verify(callService, times(1)).addCall(CREATE_CALL);
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, call.getStatusCode());
         assertEquals(call.getBody(), null);
     }

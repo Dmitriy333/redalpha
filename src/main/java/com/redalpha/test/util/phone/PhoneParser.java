@@ -5,10 +5,19 @@ import java.util.regex.Pattern;
 import org.springframework.stereotype.Component;
 
 @Component
+/**
+ * Phone parser class
+ *
+ */
 public class PhoneParser {
 
     private static final Pattern ALLOWED_CHARACTERS = Pattern.compile("[\\d\\+]");
 
+    /**
+     * Parses phone and returns formatted one.
+     * @param phone phone to parse
+     * @return phone
+     */
     public String parsePhone(final String phone) {
         char[] resultPhone = new char[phone.length()];
         int i = 0;

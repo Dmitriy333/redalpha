@@ -15,8 +15,13 @@ import com.redalpha.test.service.EntityValidationException;
 public class CallValidationService {
 
     public static final int MAX_LENGTH = 30;
-    private static final Pattern PHONE_ALLOWED_CHARACTERS_PATTERN = Pattern.compile("(\\+420)?(00420)?[\\s-]?\\(?\\d{3}\\)?\\s?\\d{3}\\s?\\(?\\d{3}\\)?");
+    private static final Pattern PHONE_ALLOWED_CHARACTERS_PATTERN = Pattern.compile("(\\+\\(?420\\)?)?(00420)?[\\s-]?\\(?\\d{3}\\)?\\s?\\d{3}\\s?\\(?\\d{3}\\)?");
 
+    /**
+     * Validates call object.
+     * @param call call object
+     * @throws EntityValidationException if call object is not valid
+     */
     public void validateCall(Call call) throws EntityValidationException {
         if (call == null) {
             throw new EntityValidationException("Call can not be empty.");
@@ -26,6 +31,11 @@ public class CallValidationService {
         validateFirstname(call.getFirstname());
     }
 
+    /**
+     * Validates call's first name.
+     * @param firstname call's first name
+     * @throws EntityValidationException if firstname is not valid
+     */
     public void validateFirstname(String firstname) throws EntityValidationException {
         if (firstname != null && firstname.length() > MAX_LENGTH) {
             throw new EntityValidationException(
@@ -33,6 +43,11 @@ public class CallValidationService {
         }
     }
 
+    /**
+     * Validates call's last name.
+     * @param firstname call's last name
+     * @throws EntityValidationException if last is not valid
+     */
     public void validateLastname(String lastname) throws EntityValidationException {
         if (StringUtils.isEmpty(lastname)) {
             throw new EntityValidationException("Call's lastname can not be empty.");
@@ -44,13 +59,18 @@ public class CallValidationService {
         }
     }
 
+    /**
+     * Validates call's phone number.
+     * @param phone call's phone
+     * @throws EntityValidationException when phone doesn't match allowed characters or has incorrect format.
+     */
     public void validatePhone(String phone) throws EntityValidationException {
         if (StringUtils.isEmpty(phone)) {
             throw new EntityValidationException("Phone can not be empty.");
         }
 
         if (!(PHONE_ALLOWED_CHARACTERS_PATTERN.matcher(phone).matches())) {
-            throw new EntityValidationException("Phone contains invalid characters or has unsupported format");
+            throw new EntityValidationException("Phone contains invalid characters or has unsupported format.");
         }
         int numberOfOpenedBrackets = 0;
         int numberOfClosedBrackets = 0;

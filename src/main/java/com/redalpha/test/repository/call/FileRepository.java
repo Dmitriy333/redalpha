@@ -36,7 +36,7 @@ public class FileRepository implements CallRepository {
     private static final DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 
     @Override
-    public Call writeCall(final Call call) throws CallRepositoryException {
+    public Call saveCall(final Call call) throws CallRepositoryException {
         try {
             readWriteLock.writeLock().lock();
             call.setTime(new Date());
@@ -62,7 +62,7 @@ public class FileRepository implements CallRepository {
     }
 
     @Override
-    public List<Call> readCalls() throws CallRepositoryException {
+    public List<Call> loadCalls() throws CallRepositoryException {
 
         try {
             readWriteLock.readLock().lock();

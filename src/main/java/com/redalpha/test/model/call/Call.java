@@ -5,6 +5,9 @@ import java.util.Date;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.redalpha.test.util.JsonDateSerializer;
 
+/**
+ * Call entity.
+ */
 public class Call {
     private String phone;
     private String firstname;
