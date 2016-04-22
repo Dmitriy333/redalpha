@@ -16,8 +16,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
@@ -29,7 +29,8 @@ public class FileRepository implements CallRepository {
 
     @Value("${call.storage.location}")
     private String callStorageLocation;
-    private final ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
+    @Autowired
+    private ReadWriteLock readWriteLock;
     private static final String FILE_PATH_PATTERN = "%s/%s";
     private static final String FILE_NAME_LASTNAME_FIRSTNAME_PATTERN = "%s_%s.txt";
     private static final String FILE_NAME_LASTNAME_PATTERN = "%s.txt";

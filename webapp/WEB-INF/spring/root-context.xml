@@ -11,5 +11,5 @@
     <context:component-scan base-package="com.redalpha.test" />
     <context:annotation-config />
     <mvc:annotation-driven />
-
+    <bean name="readWriteLock" class="java.util.concurrent.locks.ReentrantReadWriteLock"></bean>
 </beans>

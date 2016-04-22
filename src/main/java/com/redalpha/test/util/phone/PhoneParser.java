@@ -19,33 +19,31 @@ public class PhoneParser {
      * @return phone
      */
     public String parsePhone(final String phone) {
-        char[] resultPhone = new char[phone.length()];
+        char[] parsedChars = new char[phone.length()];
         int i = 0;
         for (char c : phone.toCharArray()) {
             if (ALLOWED_CHARACTERS.matcher(String.valueOf(c)).matches()) {
-                resultPhone[i++] = c;
+                parsedChars[i++] = c;
             }
         }
-        String resultPhoneString = new String(resultPhone);
-        resultPhoneString = resultPhoneString.trim();
-        if (resultPhoneString.length() == 13 && resultPhoneString.startsWith("+420")) {
-            resultPhoneString = resultPhoneString.replaceFirst("\\+", "00");
+        String formattedPhone = new String(parsedChars).trim();
+        if (formattedPhone.length() == 13 && formattedPhone.startsWith("+420")) {
+            formattedPhone = formattedPhone.replaceFirst("\\+", "00");
         }
-        if (resultPhoneString.length() == 9) {
-            resultPhoneString = String.format("00420%s", resultPhoneString);
+        if (formattedPhone.length() == 9) {
+            formattedPhone = String.format("00420%s", formattedPhone);
         }
 
-        StringBuilder sbBuilder = new StringBuilder();
-        char[] result = resultPhoneString.toCharArray();
+        StringBuilder formattedPhoneWithSpaces = new StringBuilder();
         int j = 1;
-        for (char c : result) {
-            sbBuilder.append(c);
+        for (char c : formattedPhone.toCharArray()) {
+            formattedPhoneWithSpaces.append(c);
             if (j == 5 || j == 8 || j == 11) {
-                sbBuilder.append(" ");
+                formattedPhoneWithSpaces.append(" ");
             }
             j++;
         }
 
-        return sbBuilder.toString();
+        return formattedPhoneWithSpaces.toString();
     }
 }

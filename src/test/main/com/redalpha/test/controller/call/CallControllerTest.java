@@ -1,7 +1,10 @@
 package com.redalpha.test.controller.call;
 
-import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.http.HttpStatus.OK;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,12 +23,7 @@ import com.redalpha.test.service.EntityValidationException;
 import com.redalpha.test.service.ServiceException;
 import com.redalpha.test.service.call.CallService;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
-import static org.springframework.http.HttpStatus.OK;
-
 @RunWith(MockitoJUnitRunner.class)
-@SuppressWarnings("deprecation")
 public class CallControllerTest {
 
     @Mock

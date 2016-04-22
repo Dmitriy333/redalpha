@@ -4,34 +4,28 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.mockito.internal.util.reflection.Whitebox;
 
 import com.redalpha.test.model.call.Call;
 import com.redalpha.test.repository.call.CallRepository;
 import com.redalpha.test.repository.call.CallRepositoryException;
 import com.redalpha.test.repository.call.FileRepository;
-import org.mockito.internal.util.reflection.Whitebox;
 
 public class CallRepositoryTest {
 
-    @Mock
-    private ReadWriteLock readWriteLock;
-    @InjectMocks
     private CallRepository callRepository = new FileRepository();
     private Call call;
 
     @Before
     public void init() throws IOException {
+        Whitebox.setInternalState(callRepository, "readWriteLock", new ReentrantReadWriteLock());
         call = new Call("00420 111 222 333", "Firstname", "Lastname", new Date());
     }
 
