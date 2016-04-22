@@ -25,7 +25,6 @@ import com.redalpha.test.service.ServiceException;
 import com.redalpha.test.util.phone.PhoneParser;
 
 @RunWith(MockitoJUnitRunner.class)
-@SuppressWarnings("deprecation")
 public class CallServiceTest {
     @Mock
     private CallRepository callRepository;
