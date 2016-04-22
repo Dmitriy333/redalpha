@@ -1,6 +1,6 @@
 package com.redalpha.test.service;
 
-public class EntityValidationException extends RuntimeException {
+public class EntityValidationException extends Exception {
 
     private static final long serialVersionUID = 1L;
 

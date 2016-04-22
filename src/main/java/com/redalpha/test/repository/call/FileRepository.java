@@ -1,4 +1,4 @@
-package com.redalpha.test.repository;
+package com.redalpha.test.repository.call;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,10 +22,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
-import com.redalpha.test.model.Call;
+import com.redalpha.test.model.call.Call;
 
 @Repository
-public class FileWriterRepositoryImpl implements CallWriterRepository {
+public class FileRepository implements CallRepository {
 
     @Value("${call.storage.location}")
     private String callStorageLocation;
@@ -35,12 +36,13 @@ public class FileWriterRepositoryImpl implements CallWriterRepository {
     private static final DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 
     @Override
-    public void writeCall(final Call call) throws CallRepositoryException {
+    public Call writeCall(final Call call) throws CallRepositoryException {
         try {
             readWriteLock.writeLock().lock();
+            call.setTime(new Date());
 
             final List<String> callProperties = Arrays.asList(call.getPhone(), call.getLastname(), call.getFirstname(),
-                    dateFormat.format(new Date()));
+                    dateFormat.format(call.getTime()));
 
             Path filePath = Paths.get(String.format(FILE_PATH_PATTERN, callStorageLocation,
                     generateCallName(call.getLastname(), call.getFirstname())));
@@ -52,6 +54,7 @@ public class FileWriterRepositoryImpl implements CallWriterRepository {
 
             Files.write(filePath, callProperties, StandardCharsets.UTF_8);
             readWriteLock.writeLock().unlock();
+            return call;
         } catch (IOException e) {
             readWriteLock.writeLock().unlock();
             throw new CallRepositoryException("Can't write call into disk space", e);
@@ -76,7 +79,7 @@ public class FileWriterRepositoryImpl implements CallWriterRepository {
                         }
                     }
                 }
-                callList.add(deserilizeCall(fileContent));
+                callList.add(createCall(fileContent));
             }
 
             readWriteLock.readLock().unlock();
@@ -88,13 +91,18 @@ public class FileWriterRepositoryImpl implements CallWriterRepository {
 
     }
 
-    private Call deserilizeCall(List<String> callProperties) {
+    private Call createCall(List<String> callProperties) throws CallRepositoryException {
         Call call = new Call();
         call.setPhone(callProperties.get(0));
         call.setFirstname(callProperties.get(1));
         call.setLastname(callProperties.get(2));
-        call.setTime(new Date());
-
+        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+        try {
+            Date date = formatter.parse(callProperties.get(3));
+            call.setTime(date);
+        } catch (ParseException e) {
+            throw new CallRepositoryException("Date format is incorrect.", e);
+        }
         return call;
     }
 

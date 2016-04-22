@@ -20,12 +20,9 @@ public class JsonDateSerializer extends JsonSerializer<Date> {
 
     public static final String DATE_PATTERN = "HH:mm:ss";
 
-    public static final String TIMEZONE_UTC = "UTC";
-
     @Override
     public void serialize(Date date, JsonGenerator generator, SerializerProvider provider) throws IOException {
         SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN);
-        // dateFormat.setTimeZone(TimeZone.getTimeZone(TIMEZONE_UTC));
 
         String formattedDate = dateFormat.format(date);
         generator.writeString(formattedDate);

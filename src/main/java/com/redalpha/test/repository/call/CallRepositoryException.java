@@ -1,4 +1,4 @@
-package com.redalpha.test.repository;
+package com.redalpha.test.repository.call;
 
 public class CallRepositoryException extends Exception {
 

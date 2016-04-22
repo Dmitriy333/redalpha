@@ -1,4 +1,4 @@
-package com.redalpha.test.model;
+package com.redalpha.test.model.call;
 
 import java.util.Date;
 
@@ -11,6 +11,17 @@ public class Call {
     private String lastname;
     @JsonSerialize(using = JsonDateSerializer.class)
     private Date time;
+
+    public Call() {
+    }
+
+    public Call(String phone, String firstname, String lastname, Date time) {
+        super();
+        this.phone = phone;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.time = time;
+    }
 
     public String getPhone() {
         return phone;
