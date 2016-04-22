@@ -39,7 +39,7 @@ public class CallValidationService {
     public void validateFirstname(String firstname) throws EntityValidationException {
         if (firstname != null && firstname.length() > MAX_LENGTH) {
             throw new EntityValidationException(
-                    String.format("Call's lastname length can not be more than %s characters.", MAX_LENGTH));
+                    String.format("Call's firsname length can not be more than %s characters.", MAX_LENGTH));
         }
     }
 
