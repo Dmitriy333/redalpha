@@ -2,7 +2,7 @@
 Redalpha test.
 
 
-Http request examples:
+Http requests examples:
 
 1) To add call:
   POST http://localhost:8080/redalpha/calls
